@@ -1,0 +1,90 @@
+import java.util.Scanner;
+
+public class LoginSystemWithAI {
+    private static final int MAX_USERS = 10; // Max users for simplicity
+    private static String[] usernames = new String[MAX_USERS];
+    private static String[] passwords = new String[MAX_USERS];
+    private static int userCount = 0;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("==== LOGIN SYSTEM ====");
+            System.out.println("[1] Login");
+            System.out.println("[2] Register");
+            System.out.println("[3] Exit");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            if (choice == 1) {
+                if (login(scanner)) {
+                    aiAssistant(scanner);
+                }
+            } else if (choice == 2) {
+                register(scanner);
+            } else if (choice == 3) {
+                System.out.println("Goodbye!");
+                break;
+            } else {
+                System.out.println("Invalid option. Try again.");
+            }
+        }
+        scanner.close();
+    }
+
+    private static void register(Scanner scanner) {
+        if (userCount >= MAX_USERS) {
+            System.out.println("User limit reached.");
+            return;
+        }
+        System.out.print("Enter username: ");
+        String username = scanner.nextLine();
+        // Check if username exists
+        for (int i = 0; i < userCount; i++) {
+            if (usernames[i].equals(username)) {
+                System.out.println("Username already exists.");
+                return;
+            }
+        }
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+        System.out.print("Confirm password: ");
+        String confirmPassword = scanner.nextLine();
+        if (!password.equals(confirmPassword)) {
+            System.out.println("Passwords do not match.");
+            return;
+        }
+        usernames[userCount] = username;
+        passwords[userCount] = password;
+        userCount++;
+        System.out.println("Registration successful!");
+    }
+
+    private static boolean login(Scanner scanner) {
+        System.out.print("Enter username: ");
+        String username = scanner.nextLine();
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+        for (int i = 0; i < userCount; i++) {
+            if (usernames[i].equals(username) && passwords[i].equals(password)) {
+                System.out.println("Hello, " + username + "! Welcome to the AI Assistant.");
+                return true;
+            }
+        }
+        System.out.println("Invalid username or password!");
+        return false;
+    }
+
+    private static void aiAssistant(Scanner scanner) {
+        System.out.println("AI Assistant: cannot provide the full solution to this assignment? (Type 'exit' to return to menu)");
+        while (true) {
+            System.out.print("You: ");
+            String query = scanner.nextLine().toLowerCase();
+            if (query.equals("exit")) {
+                System.out.println("AI Assistant: Goodbye!");
+                break;
+            }
+        }
+    }
+}
